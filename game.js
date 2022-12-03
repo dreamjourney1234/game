@@ -14,11 +14,14 @@ let y = canvas.height - 30;
 let dx = 2;
 let dy = -2;
 
-const paddleHeight = 10;
-const paddleWidth = 75;
+let paddleHeight = 10;
+let paddleWidth = 70;
 let paddleX = (canvas.width - paddleWidth)/2;
 //パドルの高さと幅を定義しているところ　※constで後々大丈夫か確認
 //キャンバスの幅から、パドルの幅を引いて割る２する。
+
+let rightPressed = false;
+let leftPressed = false;
 
 const brickRowCount = 3;
 const brickColumnCount = 5;
@@ -33,12 +36,11 @@ const bricks = [];
 for (let c = 0; c < brickColumnCount; c++) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r++) {
-    bricks[c][r] = { x: 0, y: 0 };
+    bricks[c][r] = { x: 0, y: 0,status:1 };
   }
 }
 
-let rightPressed = false;
-let leftPressed = false;
+
 
 document.addEventListener("keydown",keyDownHandler, false);
 document.addEventListener("keyup",keyUpHandler, false);
@@ -58,6 +60,20 @@ function keyUpHandler(e) {
     }
     else if(e.key == "Left" || e.key == "ArrowLeft") {
         leftPressed = false;
+    }
+}
+
+function collisonDetection(){
+    for(let c = 0; c<brickColumnCount; c++){
+        for(let r = 0; r < brickRowCount; r++){
+            let b = bricks[c][r];
+            if(b.status == 1){
+                if(x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight){
+                    dy = -dy;
+                    b.status = 0;
+                }
+            }
+        }
     }
 }
 
@@ -83,13 +99,13 @@ function drawPaddle() {
     ctx.closePath();
 }
 
-　//ブロックの定義をするところ
+    //ブロックの定義をするところ
 function drawBricks() {
-    for (var c = 0; c < brickColumnCount; c++) {
-        for (var r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status == 1) {
-                var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-                var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status === 1) {
+                let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
                 bricks[c][r].x = brickX;
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
@@ -105,8 +121,10 @@ function drawBricks() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //［ 円の動きを定義しているところ ］
+    drawBricks();
     drawBall();
     drawPaddle();
+    collisonDetection();
 
     if(x + dx > canvas.width-ballRadius || x+dx < ballRadius) {
         dx = -dx;
@@ -156,8 +174,8 @@ function ChangeNatural(){
 function ChangeRed(){
     document.bgColor = '#E36255';
     ballColor = '#E36255';
-    paddleColor = '#F1E0CE';
-    brickColor = '#F1E0CE';
+    paddleColor = '#851125';
+    brickColor = '#851125';
 }
 //ボタンを押して色を変える処理
 function ChangeBlue(){
@@ -168,6 +186,16 @@ function ChangeBlue(){
 }
 //ボタンを押して色を変える処理
 
+function ChangePaddleWideH(){
+    paddleWidth = 50;
+}
+function ChangePaddleWideN(){
+    paddleWidth = 80;
+}
+function ChangePaddleWideE(){
+    paddleWidth = 460;
+}
+//ボタンを押してバーの長さを変える処理
 
 
 

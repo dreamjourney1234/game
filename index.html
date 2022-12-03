@@ -14,13 +14,22 @@
 
 <body>
     <h1>ブロックゲーム</h1>
-    <p>色を変更できます</p>
+    <p>色と難易度を変更できます</p>
     <canvas id="myCanvas" width="480" height="320"></canvas>
     <script src="game.js"></script>
 
+    <div class = "Color">  
     <input type="button" value="Natural" onClick="ChangeNatural()">
     <input type="button" value="Red" onClick="ChangeRed()">
     <input type="button" value="Blue" onClick="ChangeBlue()">
+    </div>
+
+    <br>
+    <div class = "Level"> 
+    <input type="button" value="Hard" onClick="ChangePaddleWideH()">
+    <input type="button" value="Noral" onClick="ChangePaddleWideN()">
+    <input type="button" value="Easy" onClick="ChangePaddleWideE()">
+    </div>
 
 </body>
 
